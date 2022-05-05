@@ -1,23 +1,26 @@
-import { Autocomplete, FormControl, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Autocomplete, FormControl, Grid, TextField } from '@mui/material';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   City,
-  fetchCitiesAsync, selectCities
+  fetchCitiesAsync, fetchTravelPlanAsync, selectCities, selectRoutes
 } from './travelPlanSlice';
 
 
 export function TravelPlan() {
   const cities = useAppSelector(selectCities);
+  const routes = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
   const [city, setCity] = React.useState<City | null>();
 
-  const handleQueryChange = (newValue: City | null) => {
-    setCity(newValue);
+  const handleValueChange = (city: City | null) => {
+    setCity(city);
+    city && dispatch(fetchTravelPlanAsync(city));
   }
-  useEffect(() => {
-    dispatch(fetchCitiesAsync("New"));
-  }, [dispatch])
+
+  const handleQueryChange = (value: string) => {
+    value && dispatch(fetchCitiesAsync(value));
+  }
 
   return (
     <div>
@@ -26,9 +29,23 @@ export function TravelPlan() {
           getOptionLabel={(option) => option.name}
           renderOption={(props, option) => <li {...props}>{option.name}</li>}
           renderInput={(params) => <TextField {...params} label="Select City" />} value={city}
-          onChange={(event: any, newValue: City | null) => { handleQueryChange(newValue); }}
+          onChange={(event: any, newValue: City | null) => { handleValueChange(newValue); }}
+          onInputChange={(e, v) => handleQueryChange(v)}
         />
       </FormControl>
+
+      {routes.length > 0 && <Grid container spacing={2}>
+        <Grid item xs={12}>
+          {routes.map(r => <span>{r.source.name} {"->"} </span>)} {routes[routes.length - 1].dest.name}
+        </Grid>
+        <Grid item xs={12}>
+          Total Distance: {routes.map(r => r.distance).reduce((s, a) => s + a, 0).toFixed(2)} km
+        </Grid>
+        <Grid item xs={12}>
+
+        </Grid>
+      </Grid>
+      }
     </div>
   );
 }
