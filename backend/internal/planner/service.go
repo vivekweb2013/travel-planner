@@ -1,4 +1,4 @@
-package city
+package planner
 
 import (
 	"math"

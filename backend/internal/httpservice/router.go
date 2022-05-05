@@ -6,15 +6,15 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/vivekweb2013/travel-planner/internal/city"
+	"github.com/vivekweb2013/travel-planner/internal/planner"
 )
 
 // Run starts the http server.
-func Run(cityService city.Service) error {
+func Run(cityService planner.Service) error {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
-	cityHandler := NewCityHandler(cityService)
+	cityHandler := NewPlannerHandler(cityService)
 
 	v1 := router.Group("api/v1")
 	v1.GET("/cities", cityHandler.GetMatchingCities)

@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/sirupsen/logrus"
-	"github.com/vivekweb2013/travel-planner/internal/city"
 	"github.com/vivekweb2013/travel-planner/internal/httpservice"
+	"github.com/vivekweb2013/travel-planner/internal/planner"
 )
 
 const (
@@ -20,12 +20,12 @@ func main() {
 		logrus.Fatal("error parsing cities.json file", err)
 	}
 
-	cityService := city.NewService(cities)
-	httpservice.Run(cityService)
+	plannerService := planner.NewService(cities)
+	httpservice.Run(plannerService)
 }
 
-func parseCities() (map[string][]city.City, error) {
-	var m map[string]city.City
+func parseCities() (map[string][]planner.City, error) {
+	var m map[string]planner.City
 	jsonFile, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -37,12 +37,12 @@ func parseCities() (map[string][]city.City, error) {
 	}
 
 	json.Unmarshal(byteValue, &m)
-	qc := make(map[string][]city.City)
+	qc := make(map[string][]planner.City)
 	for _, c := range m {
 		if val, ok := qc[c.ContID]; ok {
 			qc[c.ContID] = append(val, c)
 		} else {
-			qc[c.ContID] = []city.City{c}
+			qc[c.ContID] = []planner.City{c}
 		}
 	}
 
