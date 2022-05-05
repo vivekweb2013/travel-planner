@@ -18,6 +18,7 @@ func Run(cityService city.Service) error {
 
 	v1 := router.Group("api/v1")
 	v1.GET("/cities", cityHandler.GetMatchingCities)
+	v1.POST("/travelplan", cityHandler.GetTravelPlan)
 
 	address := net.JoinHostPort("localhost", "8080")
 	server := http.Server{

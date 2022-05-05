@@ -35,3 +35,23 @@ func (c *CityHandler) GetMatchingCities(g *gin.Context) {
 	g.JSON(http.StatusOK, matchingCities)
 	logrus.WithField("query", query).Info("request to search cities successful")
 }
+
+// GetTravelPlan creates a travel plan that starts and ends to the provided city.
+// It returns the travel plan as a http response.
+func (c *CityHandler) GetTravelPlan(g *gin.Context) {
+	var cityPayload city.City
+	g.BindJSON(&cityPayload)
+	logrus.Infof("%+v", cityPayload)
+	err := cityPayload.Validate()
+	if err != nil {
+		abortRequestWithError(g, NewAppError(ErrorCodeValidationFailed, err.Error()))
+		return
+	}
+
+	logrus.WithField("start city", cityPayload.Name).Info("request to make travel plan started")
+
+	plan := c.cityService.GetTravelPlan(cityPayload)
+	g.JSON(http.StatusOK, plan)
+
+	logrus.WithField("start city", cityPayload.Name).Info("request to make travel plan successful")
+}
