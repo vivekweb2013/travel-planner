@@ -23,11 +23,11 @@ func NewService(continents map[string][]City) Service {
 }
 
 func (s *service) GetMatchingCities(query string) []City {
-	var match []City
+	match := make([]City, 0)
 
 	for _, q := range s.continents {
 		for _, c := range q {
-			if strings.HasPrefix(c.Name, query) {
+			if strings.HasPrefix(strings.ToLower(c.Name), strings.ToLower(query)) {
 				match = append(match, c)
 			}
 			if len(match) == 5 {
