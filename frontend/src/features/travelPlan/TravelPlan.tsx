@@ -20,14 +20,9 @@ export function TravelPlan() {
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-        <Autocomplete
-          id="city-select"
-          options={cities}
-          renderInput={(params) => <TextField {...params} label="Select City" />}
-          value={city}
-          onChange={(event: any, newValue: City | null) => {
-            setCity(newValue);
-          }}
+        <Autocomplete id="city-select" options={cities}
+          renderInput={(params) => <TextField {...params} label="Select City" />} value={city}
+          onChange={(event: any, newValue: City | null) => { setCity(newValue); }}
         />
       </FormControl>
     </div>
