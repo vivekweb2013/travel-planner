@@ -23,3 +23,6 @@ npm install
 npm start
 ```
 This will start the server on port `3000`
+
+#### Screenshot
+<img width="780" alt="image" src="https://user-images.githubusercontent.com/7036736/167074596-a2f74f69-0c0e-466c-9e62-fe8fe2793617.png">
