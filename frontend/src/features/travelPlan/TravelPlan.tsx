@@ -23,17 +23,11 @@ const linePaint = {
   "line-opacity": 1
 }
 
-const getCirclePaint = () => ({
-  'circle-radius': 30,
-  'circle-color': '#E54E52',
-  'circle-opacity': 0.8
-});
-
 export function TravelPlan() {
   const cities = useAppSelector(selectCities);
   const routes = useAppSelector(selectRoutes);
   const mappedRoutes = routes.map(r => [r.source.location.lon, r.source.location.lat] as [number, number])
-  console.log(mappedRoutes)
+  mappedRoutes.push(mappedRoutes[0])
   const dispatch = useAppDispatch();
   const [city, setCity] = React.useState<City | null>();
 
@@ -67,15 +61,14 @@ export function TravelPlan() {
           Total Distance: {routes.map(r => r.distance).reduce((s, a) => s + a, 0).toFixed(2)} km
         </Grid>
         <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" style={{ height: '100vh' }}>
-          <Map style="mapbox://styles/mapbox/streets-v9" containerStyle={{ height: '100%', width: '80%' }} zoom={[0]}>
+          <Map style="mapbox://styles/mapbox/streets-v9" containerStyle={{ height: '100%', width: '80%' }} zoom={[1]}>
             <Layer type="line" layout={lineLayout} paint={linePaint}>
-              <Feature coordinates={[[-0.127758, 51.507351], [72.877655, 19.075983]]} />
+              <Feature coordinates={mappedRoutes} />
             </Layer>
           </Map>
         </Grid>
       </Grid>
       }
-
     </div>
   );
 }
